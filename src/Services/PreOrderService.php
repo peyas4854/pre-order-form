@@ -52,7 +52,7 @@ class PreOrderService
         $preOrders = $query->paginate($perPage);
 
         return $preOrders;
-        
+
     }
 
     /**
@@ -67,7 +67,6 @@ class PreOrderService
         // You can process the data, handle logging, send notifications, etc.
 
         // Store the new order in the database
-//        dd($data);
         $preOrder = $this->preOrder->create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -75,8 +74,12 @@ class PreOrderService
             'product_id' => $data['product_id'],
         ]);
 
-        // Return the created PreOrder object if needed
         return $preOrder;
+    }
+
+    public function delete($preOrder)
+    {
+        $preOrder->delete();
     }
 
 }

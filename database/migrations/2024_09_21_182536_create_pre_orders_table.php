@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->foreignId('product_id');
             $table->timestamps();
+            $table->softDeletes();
+            $table->foreignId('deleted_by_id')->nullable();
 
         });
     }

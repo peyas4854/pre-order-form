@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Peyas\PreOrderForm\Http\Requests\PreOrderRequest;
 use Peyas\PreOrderForm\Http\Resources\PreOrderResource;
+use Peyas\PreOrderForm\Models\PreOrder;
 use Peyas\PreOrderForm\Services\PreOrderService;
 
 class PreOrderController extends Controller
@@ -15,14 +16,13 @@ class PreOrderController extends Controller
     public function __construct(PreOrderService $preOrderService)
     {
         $this->preOrderService = $preOrderService;
+        $this->middleware('auth:sanctum')->only('destroy');
     }
 
     public function index(Request $request)
     {
         $preOrders = $this->preOrderService->index($request);
         return PreOrderResource::collection($preOrders);
-
-
     }
 
     public function store(PreOrderRequest $request)
@@ -36,4 +36,11 @@ class PreOrderController extends Controller
             return response()->json(['message' => 'Order not created'], 400);
         }
     }
+
+    public function destroy(PreOrder $preOrder)
+    {
+        $this->preOrderService->delete($preOrder);
+        return response()->json(['message' => 'Pre Order Deleted Successfully'], 200);
+    }
+
 }
