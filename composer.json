@@ -1,5 +1,5 @@
 {
-    "name": "peyas/PreOrderForm",
+    "name": "peyas/pre-order-form",
     "description": "Simple PreOrder Form",
     "keywords": [
         "ecommerce",
@@ -15,13 +15,27 @@
         }
     ],
     "require": {
-        "php": "^8.3",
+        "php": "^8.2",
         "illuminate/database": "^11.0",
         "illuminate/support": "^11.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "orchestra/testbench": "^7.0"
     },
     "autoload": {
         "psr-4": {
             "Peyas\\PreOrderForm\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Peyas\\PreOrderForm\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
     }
 }
