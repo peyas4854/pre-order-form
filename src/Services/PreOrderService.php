@@ -2,7 +2,10 @@
 
 namespace Peyas\PreOrderForm\Services;
 
+use Illuminate\Support\Facades\Notification;
 use Peyas\PreOrderForm\Models\PreOrder;
+use Peyas\PreOrderForm\Notifications\AdminPreOrderNotification;
+use Peyas\PreOrderForm\Notifications\UserPreOrderNotification;
 
 class PreOrderService
 {
@@ -63,16 +66,20 @@ class PreOrderService
      */
     public function store(array $data)
     {
-        // Business logic or data manipulation before saving
-        // You can process the data, handle logging, send notifications, etc.
 
-        // Store the new order in the database
         $preOrder = $this->preOrder->create([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'] ?? null,
             'product_id' => $data['product_id'],
         ]);
+        // Send notification to admin first
+        Notification::route('mail', 'admin@admin.com')
+            ->notify(new AdminPreOrderNotification($preOrder));
+
+        // Once admin receives, queue the user email notification
+        Notification::route('mail', $preOrder->email)
+            ->notify(new UserPreOrderNotification($preOrder));
 
         return $preOrder;
     }

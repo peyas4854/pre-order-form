@@ -19,7 +19,7 @@ class PreOrderResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'product_id' => $this->product ? new ProductResource($this->product) : null,
+            'product' => $this->product ? new ProductResource($this->product) : null,
             'created_at' => Carbon::parse($this->created_at)->format('Y-m-d'),
             'updated_at' => Carbon::parse($this->updated_at)->format('Y-m-d')
         ];

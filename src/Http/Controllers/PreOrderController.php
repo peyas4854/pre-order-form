@@ -46,7 +46,7 @@ class PreOrderController extends Controller implements HasMiddleware
 
     public function store(PreOrderRequest $request)
     {
-        // TODO : implement recaptcha validation , Send Notification to Admin and User
+
         try {
             $validated = $request->validated();
             $this->preOrderService->store($validated);
