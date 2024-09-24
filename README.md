@@ -1,9 +1,41 @@
 ## Installation
 
-You can install the package via composer:
+You can install the package via composer inside package folder .
 
 ```bash
-composer require peyas/pre-order-form
+mkdir "packages"
+cd packages
+git clone https://github.com/peyas4854/pre-order-form.git
+```
+
+## Autoload
+
+Modify the composer.json file in the root of your laravel project to autoload the package.
+
+```bash
+"autoload": {
+    "psr-4": {
+        "Peyas\\PreOrderForm\\": "packages/pre-order-form/src"
+    }
+}
+```
+
+Run the following command to autoload the package.
+
+```bash
+composer dump-autoload
+```
+
+## Register the package
+
+Add the service provider to the providers array in the bootstrap/app.php file.
+
+```php
+
+return [
+  
+    Peyas\PreOrderForm\PreOrderFormServiceProvider::class,
+];
 ```
 
 ## Usage
