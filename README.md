@@ -1,11 +1,3 @@
-# Very short description of the package
-
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/peyas/pre-order-form.svg?style=flat-square)](https://packagist.org/packages/peyas/pre-order-form)
-[![Total Downloads](https://img.shields.io/packagist/dt/peyas/pre-order-form.svg?style=flat-square)](https://packagist.org/packages/peyas/pre-order-form)
-![GitHub Actions](https://github.com/peyas/pre-order-form/actions/workflows/main.yml/badge.svg)
-
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
-
 ## Installation
 
 You can install the package via composer:
@@ -17,13 +9,20 @@ composer require peyas/pre-order-form
 ## Usage
 
 ```php
-// Usage description here
-```
+use Peyas\PreOrderForm\PreOrderForm;
 
-### Testing
+    // in api.php
 
-```bash
-composer test
+    // public api routes
+    PreOrderForm::routes([
+        'pre-order-store', // order store 
+    ]);
+    // auth api routes
+    PreOrderForm::routes([
+        'pre-order-delete', // order delete
+        'pre-order-index-show-view' // order index show view
+    ]);
+
 ```
 
 ### Changelog
@@ -40,8 +39,8 @@ If you discover any security related issues, please email peyaschandra@gmail.com
 
 ## Credits
 
--   [Peyas Chandra Das](https://github.com/peyas)
--   [All Contributors](../../contributors)
+- [Peyas Chandra Das](https://github.com/peyas)
+- [All Contributors](../../contributors)
 
 ## License
 
