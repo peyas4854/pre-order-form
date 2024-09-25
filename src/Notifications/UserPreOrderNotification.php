@@ -3,10 +3,11 @@
 namespace Peyas\PreOrderForm\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class UserPreOrderNotification extends Notification
+class UserPreOrderNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
