@@ -27,7 +27,8 @@ class PreOrderRequest extends FormRequest
         $rules = [
             'name' => 'required|string',
             'email' => 'required|email',
-            'product_id' => 'required|exists:products,id'
+            'product_id' => 'required|exists:products,id',
+            'recaptcha' => 'required',
         ];
 
         // Add a conditional rule for phone if email ends with "@xyz.com"

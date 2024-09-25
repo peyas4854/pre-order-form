@@ -2,6 +2,7 @@
 namespace Tests\Unit;
 
 use Peyas\PreOrderForm\Http\Resources\PreOrderResource;
+use Peyas\PreOrderForm\Services\RecaptchaService;
 use Tests\TestCase;
 use Peyas\PreOrderForm\Http\Controllers\PreOrderController;
 use Peyas\PreOrderForm\Services\PreOrderService;
@@ -53,7 +54,7 @@ class PreOrderControllerTest extends TestCase
             $resourceCollection->response()->getData(true)
         );
     }
-    public function test_store_creates_pre_order()
+    public function test_store_creates_preorder_successfully()
     {
         // Arrange
         $request = \Mockery::mock(PreOrderRequest::class);
@@ -62,16 +63,32 @@ class PreOrderControllerTest extends TestCase
             'email' => 'john.doe@example.com',
             'phone' => '1234567890',
             'product_id' => 1,
+            'recaptcha' => 'some_recaptcha_token', // Ensure recaptcha key is included
         ];
 
         // Mock the request validation
         $request->shouldReceive('validated')->once()->andReturn($validatedData);
+        // Mock the request IP
+        $request->shouldReceive('ip')->once()->andReturn('192.168.1.1');
 
-        // Mock the service
+        // Mock the RecaptchaService
+        $recaptchaService = \Mockery::mock(RecaptchaService::class);
+        $recaptchaService->shouldReceive('recaptchaValidate')
+            ->once()
+            ->with($validatedData, '192.168.1.1')
+            ->andReturn(true);
+
+        // Use a partial mock to replace the `new` instantiation within the controller
+        \Mockery::mock(RecaptchaService::class)->shouldReceive('recaptchaValidate')->andReturnUsing(function ($data, $ip) use ($recaptchaService) {
+            return $recaptchaService->recaptchaValidate($data, $ip);
+        });
+
+        // Mock the service and expect it to be called once
         $this->preOrderService->shouldReceive('store')->once()->with($validatedData);
 
         // Act
         $response = $this->controller->store($request);
+//        dd($response);
 
         // Assert
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -80,7 +97,12 @@ class PreOrderControllerTest extends TestCase
             json_encode(['message' => 'Your Pre Order Store Successfully']),
             $response->getContent()
         );
+
+        // Clean up Mockery
+        \Mockery::close();
     }
+
+
     public function test_show_returns_pre_order()
     {
         // Arrange
